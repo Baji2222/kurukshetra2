@@ -1,0 +1,117 @@
+.stats-section {
+  position: relative;
+  padding: var(--section-pad) 0;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(255, 106, 0, 0.06), transparent 70%),
+    var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Blockchain circuitry background pattern */
+.stats__circuitry {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 138, 61, 0.02) 0px,
+      rgba(255, 138, 61, 0.02) 1px,
+      transparent 1px,
+      transparent 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 138, 61, 0.02) 0px,
+      rgba(255, 138, 61, 0.02) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  background-size: 40px 40px, 40px 40px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stats-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.stats-subtitle {
+  max-width: 600px;
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+
+.stats-title {
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.stats-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.stat-card {
+  position: relative;
+  background: var(--bg-card);
+  padding: 44px 32px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.stat-card:hover {
+  background: #100d0a;
+}
+
+.stat-card__value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 4.2vw, 3.1rem);
+  background: linear-gradient(135deg, var(--orange-bright), var(--orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.01em;
+}
+
+.stat-card__label {
+  margin-top: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.stat-card__detail {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-faint);
+}
+
+@media (max-width: 760px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

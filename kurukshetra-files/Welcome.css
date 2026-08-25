@@ -1,0 +1,51 @@
+.welcome {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.welcome__content {
+  max-width: 900px;
+}
+
+.welcome .eyebrow {
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+
+.welcome__title {
+  font-size: 2rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.welcome__subtitle {
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.welcome__actions .glow-btn {
+  margin-top: 1rem;
+}
+
+/* Overlay specific */
+.welcome--overlay {
+  position: fixed;
+  inset: 0;
+  background: #050506;
+  color: #fff;
+  z-index: 9999;
+}
+
+.welcome--overlay .hero__brand {
+  font-size: 3.25rem;
+  letter-spacing: 0.06em;
+  margin-top: 0.25rem;
+}
+
+.welcome--overlay .welcome__title {
+  font-size: 2.25rem;
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,107 @@
+.footer {
+  position: relative;
+  border-top: 1px solid var(--border);
+  background: var(--bg-raised);
+  padding-top: 56px;
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: 40px;
+}
+
+.footer__brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer__brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  color: #1a0900;
+  background: linear-gradient(135deg, var(--orange-bright), var(--orange-deep));
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+
+.footer__brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--text-primary);
+}
+
+.footer__tagline {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer__nav-link {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  transition: color 0.25s ease;
+}
+
+.footer__nav-link:hover {
+  color: var(--orange-bright);
+}
+
+.footer__socials {
+  display: flex;
+  gap: 10px;
+}
+
+.footer__socials a {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.footer__socials a:hover {
+  color: var(--orange-bright);
+  border-color: var(--border-strong);
+}
+
+.footer__socials svg {
+  width: 15px;
+  height: 15px;
+}
+
+.footer__bottom {
+  border-top: 1px solid var(--border);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer__bottom p {
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}

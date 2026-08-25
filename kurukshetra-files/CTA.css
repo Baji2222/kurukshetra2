@@ -1,0 +1,34 @@
+.cta-section {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding-top: var(--section-pad);
+  padding-bottom: var(--section-pad);
+}
+
+.cta-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 40px rgba(255, 106, 0, 0.35);
+}
+
+.cta-copy {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  max-width: 520px;
+}

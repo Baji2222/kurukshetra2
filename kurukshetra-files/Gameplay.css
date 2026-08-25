@@ -1,0 +1,141 @@
+.gameplay-section {
+  position: relative;
+  padding: var(--section-pad) 0;
+  background:
+    radial-gradient(50% 40% at 15% 20%, rgba(123, 63, 228, 0.05), transparent 70%),
+    radial-gradient(50% 40% at 85% 80%, rgba(46, 111, 238, 0.05), transparent 70%),
+    var(--bg);
+  overflow: hidden;
+}
+
+/* Background parallax element */
+.gameplay__bg {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background: 
+    radial-gradient(ellipse at center, rgba(123, 63, 228, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gameplay-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.gameplay-description {
+  max-width: 600px;
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+
+.gameplay-title {
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+}
+
+.gameplay-timeline {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.gameplay-timeline__line {
+  position: absolute;
+  top: 27px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong) 15%, var(--border-strong) 85%, transparent);
+}
+
+.gameplay-step {
+  position: relative;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.gameplay-step__marker {
+  position: relative;
+  z-index: 2;
+  display: inline-grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  color: #1a0900;
+  background: linear-gradient(135deg, var(--orange-bright), var(--orange-deep));
+  box-shadow: 0 0 0 6px var(--bg), 0 0 26px rgba(255, 106, 0, 0.5);
+}
+
+.gameplay-step__marker svg {
+  width: 24px;
+  height: 24px;
+}
+
+.gameplay-step__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+
+.gameplay-step__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.gameplay-step__text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .gameplay-timeline {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .gameplay-timeline__line {
+    top: 0;
+    bottom: 0;
+    left: 27px;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(180deg, transparent, var(--border-strong) 10%, var(--border-strong) 90%, transparent);
+  }
+  .gameplay-step {
+    text-align: left;
+    padding-left: 76px;
+  }
+  .gameplay-step__marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-bottom: 0;
+  }
+  .gameplay-step__text {
+    margin: 0;
+  }
+}
