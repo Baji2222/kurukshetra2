@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import IntroAnimation from './IntroAnimation';
+import Battlefield from './Battlefield';
 import Navbar from './Navbar';
 import Welcome from './Welcome';
 import Hero from './Hero';
@@ -25,6 +26,9 @@ function App() {
     <>
       {!introDone && <IntroAnimation onComplete={() => setIntroDone(true)} />}
 
+      <div className="page-battlefield" aria-hidden="true">
+        <Battlefield variant="page" image="./battlefield-hero.jpg" />
+      </div>
       <Navbar />
       {showWelcome && (
         <Welcome

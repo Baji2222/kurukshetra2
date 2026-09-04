@@ -27,6 +27,19 @@ export default function Battlefield({ image, variant = 'hero', children }) {
           <span key={i} className={`bf-spark bf-spark--${(i % 7) + 1}`} />
         ))}
       </div>
+      <div className="battlefield__combat" aria-hidden="true">
+        <div className="bf-blast bf-blast--left"><span /></div>
+        <div className="bf-blast bf-blast--right"><span /></div>
+        <div className="bf-tracer bf-tracer--one" />
+        <div className="bf-tracer bf-tracer--two" />
+        <div className="bf-vehicle bf-vehicle--left"><i /><b /></div>
+        <div className="bf-vehicle bf-vehicle--right"><i /><b /></div>
+        <div className="bf-soldier bf-soldier--left"><i /><b /></div>
+        <div className="bf-soldier bf-soldier--center"><i /><b /></div>
+        <div className="bf-soldier bf-soldier--right"><i /><b /></div>
+        <div className="bf-grenade bf-grenade--one" />
+        <div className="bf-grenade bf-grenade--two" />
+      </div>
       <div className="battlefield__scanlines" aria-hidden="true" />
       <div className="battlefield__vignette" />
       {children}

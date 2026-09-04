@@ -72,6 +72,30 @@ body {
   min-height: 100svh;
 }
 
+.page-battlefield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.page-battlefield .battlefield {
+  position: absolute;
+  inset: 0;
+  opacity: 0.62;
+}
+
+.page-battlefield ~ * {
+  position: relative;
+  z-index: 1;
+}
+
+.page-battlefield ~ main > section,
+.page-battlefield ~ footer {
+  background: transparent;
+}
+
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   margin: 0;

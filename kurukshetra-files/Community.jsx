@@ -3,9 +3,9 @@ import { XIcon, TelegramIcon, DiscordIcon } from './Icons';
 import './Community.css';
 
 const CHANNELS = [
-  { label: 'X / Twitter', href: 'https://x.com/imcomingsoon_?s=11', Icon: XIcon },
-  { label: 'Telegram', href: 'https://t.me/Deekshith_reddy_eleti', Icon: TelegramIcon },
-  { label: 'Discord', href: 'https://discord.gg/ybuD7KTuv', Icon: DiscordIcon },
+  { label: 'Twitter', href: 'https://x.com/imcomingsoon_?s=11', Icon: XIcon, tone: 'twitter' },
+  { label: 'Telegram', href: 'https://t.me/Deekshith_reddy_eleti', Icon: TelegramIcon, tone: 'telegram' },
+  { label: 'Discord', href: 'https://discord.gg/ybuD7KTuv', Icon: DiscordIcon, tone: 'discord' },
 ];
 
 export default function Community() {
@@ -19,14 +19,23 @@ export default function Community() {
           <h2 className="community-title">Join the Kurukshetra Community</h2>
           <p className="community-copy">Be part of the next generation of blockchain gaming.</p>
 
-          <div className="community-channels">
-            {CHANNELS.map(({ label, href, Icon }) => (
+          <div className="community-orbit" aria-label="Kurukshetra community links">
+            <div className="community-orbit__ring community-orbit__ring--outer" />
+            <div className="community-orbit__ring community-orbit__ring--inner" />
+
+            <div className="community-orbit__center">
+              <img src="/coin-logo.png" alt="Kurukshetra logo" />
+              <span>KURUKSHETRA</span>
+            </div>
+
+            {CHANNELS.map(({ label, href, Icon, tone }, index) => (
               <a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="community-channel"
+                className={`community-channel community-channel--${tone}`}
+                style={{ '--angle': `${index * 120}deg`, '--delay': index }}
               >
                 <span className="community-channel__icon">
                   <Icon />
