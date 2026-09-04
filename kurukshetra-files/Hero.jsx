@@ -115,7 +115,7 @@ export default function Hero() {
       <Battlefield variant="hero" image="./battlefield-hero.jpg" />
 
       <div ref={contentRef} className="hero__content container">
-        <div ref={eyebrowRef} className="eyebrow">96 players · one battlefield</div>
+        <div ref={eyebrowRef} className="eyebrow">GameFi narrative</div>
         <div className="hero__brand" ref={brandRef} aria-hidden="true">
           KURUKSHETRA
         </div>

@@ -9,27 +9,27 @@ const STOPS = [
   {
     number: '01',
     label: 'PHASE 1: MINING APP',
-    text: 'Website + $WAR Mining App Live | 70% Free for Community',
+    text: '$WAR mining app live | 70% for the community',
   },
   {
     number: '02',
     label: 'PHASE 2: GAME',
-    text: 'Kurukshetra Battle Game Launch | Play & Earn $WAR',
+    text: 'Battle game launch | Play and earn $WAR',
   },
   {
     number: '03',
-    label: 'PHASE 3: WEB3 + FANTASY 11',
-    text: 'Web3 Wallet + Dream11 for Esports | Pick 11 & Win',
+    label: 'PHASE 3: WEB3 + PREDICTION 11',
+    text: 'Web3 wallet | Prediction 11 esports mode',
   },
   {
     number: '04',
     label: 'PHASE 4: FILMS',
-    text: 'Blockchain Films | DAO Governed Movies',
+    text: 'DAO-governed blockchain films',
   },
   {
     number: '05',
     label: 'PHASE 5: METAVERSE & AI',
-    text: 'Metaverse World + AI Warriors + VR',
+    text: 'Metaverse world | AI warriors | VR',
   },
 ];
 

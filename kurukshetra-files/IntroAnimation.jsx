@@ -7,8 +7,11 @@ export default function IntroAnimation({ onComplete }) {
   const [stage, setStage] = useState('dark');
   const [coinLanded, setCoinLanded] = useState(false);
   const [revealed, setRevealed] = useState(0);
+  const [soundOn, setSoundOn] = useState(true);
   const audioContext = useRef(null);
+  const soundEnabled = useRef(true);
   const playCue = (type, index = 0) => {
+    if (!soundEnabled.current) return;
     try {
       const Context = window.AudioContext || window.webkitAudioContext;
       if (!Context) return;
@@ -54,6 +57,18 @@ export default function IntroAnimation({ onComplete }) {
     return () => { timers.forEach(clearTimeout); document.body.style.overflow = ''; if (audioContext.current) audioContext.current.close(); };
   }, [onComplete]);
   return <div className={`intro intro--${stage}`} aria-label="KURUKSHETRA title reveal">
+    <button
+      className="intro__sound-toggle"
+      type="button"
+      aria-label={soundOn ? 'Mute intro sound' : 'Unmute intro sound'}
+      onClick={() => {
+        const nextSoundOn = !soundEnabled.current;
+        soundEnabled.current = nextSoundOn;
+        setSoundOn(nextSoundOn);
+      }}
+    >
+      {soundOn ? 'SOUND ON' : 'SOUND OFF'}
+    </button>
     <div className="intro__background" />
     <div className="intro__smoke" /><div className="intro__floor" />
     <div className="intro__embers" aria-hidden="true">{Array.from({ length: 22 }).map((_, i) => <i key={i} style={{ '--i': i }} />)}</div>

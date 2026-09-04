@@ -12,8 +12,8 @@
   background-size: cover;
   background-position: center;
   z-index: 0;
-  opacity: 0.82;
-  filter: saturate(1.15) contrast(1.12) brightness(0.7);
+  opacity: 0.94;
+  filter: saturate(1.22) contrast(1.08) brightness(0.82);
 }
 
 .battlefield__sky {
@@ -21,10 +21,8 @@
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(60% 50% at 50% 8%, rgba(255, 106, 0, 0.22), transparent 60%),
-    radial-gradient(80% 60% at 20% 100%, rgba(123, 63, 228, 0.16), transparent 65%),
-    radial-gradient(70% 55% at 85% 100%, rgba(46, 111, 238, 0.14), transparent 65%),
-    linear-gradient(180deg, rgba(8, 7, 10, 0.48) 0%, rgba(13, 10, 9, 0.34) 42%, rgba(26, 13, 6, 0.5) 78%, rgba(36, 18, 6, 0.7) 100%);
+    radial-gradient(55% 42% at 50% 40%, rgba(255, 167, 67, 0.18), transparent 62%),
+    linear-gradient(180deg, rgba(8, 7, 10, 0.16) 0%, rgba(13, 10, 9, 0.08) 42%, rgba(26, 13, 6, 0.28) 78%, rgba(36, 18, 6, 0.46) 100%);
 }
 
 .battlefield__structures {
@@ -198,6 +196,8 @@
 .bf-vehicle b { right: 14%; }
 .bf-vehicle--left { left: -2%; transform: scale(0.86); }
 .bf-vehicle--right { right: -4%; bottom: 13%; transform: scale(0.62) scaleX(-1); opacity: 0.56; }
+.bf-vehicle--left { animation-name: vehiclePatrolLeft; animation-duration: 8s; }
+.bf-vehicle--right { animation-name: vehiclePatrolRight; animation-duration: 10s; }
 
 .bf-soldier {
   position: absolute;
@@ -248,9 +248,9 @@
   animation: muzzleFlash 4.5s ease-in-out infinite;
 }
 
-.bf-soldier--left { left: 25%; transform: scale(0.66); animation-delay: -1.2s; opacity: 0.52; }
-.bf-soldier--center { left: 50%; transform: scale(0.9); animation-delay: -2.4s; opacity: 0.76; }
-.bf-soldier--right { right: 22%; transform: scale(0.58) scaleX(-1); animation-delay: -3.4s; opacity: 0.48; }
+.bf-soldier--left { left: 25%; transform: scale(0.66); animation-name: soldierPatrolLeft; animation-delay: -1.2s; opacity: 0.52; }
+.bf-soldier--center { left: 50%; transform: scale(0.9); animation-name: soldierPatrolCenter; animation-delay: -2.4s; opacity: 0.76; }
+.bf-soldier--right { right: 22%; transform: scale(0.58) scaleX(-1); animation-name: soldierPatrolRight; animation-delay: -3.4s; opacity: 0.48; }
 
 .bf-grenade {
   position: absolute;
@@ -283,9 +283,34 @@
   to { transform: translateX(4px) translateY(-2px); }
 }
 
+@keyframes vehiclePatrolLeft {
+  from { transform: translateX(-8px) scale(0.86); }
+  to { transform: translateX(18px) translateY(-3px) scale(0.86); }
+}
+
+@keyframes vehiclePatrolRight {
+  from { transform: translateX(10px) scale(0.62) scaleX(-1); }
+  to { transform: translateX(-18px) translateY(-3px) scale(0.62) scaleX(-1); }
+}
+
 @keyframes soldierWatch {
   from { rotate: -1deg; }
   to { rotate: 2deg; }
+}
+
+@keyframes soldierPatrolLeft {
+  from { transform: translateX(-4px) scale(0.66) rotate(-1deg); }
+  to { transform: translateX(7px) scale(0.66) rotate(2deg); }
+}
+
+@keyframes soldierPatrolCenter {
+  from { transform: translateX(3px) scale(0.9) rotate(-1deg); }
+  to { transform: translateX(-5px) scale(0.9) rotate(2deg); }
+}
+
+@keyframes soldierPatrolRight {
+  from { transform: translateX(5px) scale(0.58) scaleX(-1) rotate(-1deg); }
+  to { transform: translateX(-8px) scale(0.58) scaleX(-1) rotate(2deg); }
 }
 
 @keyframes muzzleFlash {
@@ -347,15 +372,53 @@
   inset: 0;
   z-index: 7;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.05) 30%, rgba(0, 0, 0, 0.15) 60%, rgba(0, 0, 0, 0.85) 100%),
-    radial-gradient(120% 100% at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.65) 100%);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.02) 30%, rgba(0, 0, 0, 0.12) 60%, rgba(0, 0, 0, 0.62) 100%),
+    radial-gradient(120% 100% at 50% 50%, transparent 52%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+/* The full-page scene should read as the supplied artwork first; procedural
+   silhouettes and combat cues add motion without hiding the recognizable image. */
+.battlefield--page .battlefield__photo {
+  opacity: 1;
+  filter: saturate(1.28) contrast(1.08) brightness(0.88);
+  transform: scale(1.04);
+  animation: battlefieldPhotoDrift 30s ease-in-out infinite alternate;
+}
+
+.page-battlefield[data-focus='0'] .battlefield__photo { background-position: 32% 48%; }
+.page-battlefield[data-focus='1'] .battlefield__photo { background-position: 50% 42%; }
+.page-battlefield[data-focus='2'] .battlefield__photo { background-position: 66% 52%; }
+.page-battlefield[data-focus='3'] .battlefield__photo { background-position: 42% 58%; }
+.page-battlefield[data-focus='4'] .battlefield__photo { background-position: 72% 48%; }
+.page-battlefield[data-focus='5'] .battlefield__photo { background-position: 55% 60%; }
+.page-battlefield[data-focus='6'] .battlefield__photo { background-position: 28% 54%; }
+.page-battlefield[data-focus='7'] .battlefield__photo { background-position: 50% 62%; }
+
+@keyframes battlefieldPhotoDrift {
+  from { transform: scale(1.04) translate3d(-0.8%, 0, 0); }
+  to { transform: scale(1.08) translate3d(0.8%, -1%, 0); }
+}
+
+.battlefield--page .battlefield__structures {
+  opacity: 0.24;
+}
+
+.battlefield--page .battlefield__combat {
+  opacity: 0.68;
+}
+
+.battlefield--page .battlefield__vignette {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.01) 34%, rgba(0, 0, 0, 0.12) 68%, rgba(0, 0, 0, 0.5) 100%),
+    radial-gradient(120% 100% at 50% 50%, transparent 56%, rgba(0, 0, 0, 0.28) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .battlefield__smoke,
   .bf-spark,
   .battlefield__combat,
-  .battlefield__combat * {
+  .battlefield__combat *,
+  .battlefield--page .battlefield__photo {
     animation: none;
   }
 

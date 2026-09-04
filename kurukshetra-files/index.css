@@ -83,7 +83,7 @@ body {
 .page-battlefield .battlefield {
   position: absolute;
   inset: 0;
-  opacity: 0.62;
+  opacity: 0.78;
 }
 
 .page-battlefield ~ * {
@@ -94,6 +94,15 @@ body {
 .page-battlefield ~ main > section,
 .page-battlefield ~ footer {
   background: transparent;
+}
+
+.hero__subtitle,
+.roadmap-intro,
+.cta-copy {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: rgba(5, 5, 6, 0.24);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);
 }
 
 h1, h2, h3, h4 {
