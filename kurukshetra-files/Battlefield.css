@@ -4,6 +4,7 @@
   z-index: 0;
   overflow: hidden;
   background: #000;
+  contain: layout paint style;
 }
 
 .battlefield__photo {
@@ -14,6 +15,7 @@
   z-index: 0;
   opacity: 0.94;
   filter: saturate(1.22) contrast(1.08) brightness(0.82);
+  will-change: transform, opacity;
 }
 
 .battlefield__sky {
@@ -78,11 +80,12 @@
   filter: blur(6px);
   z-index: 3;
   animation: smokeDrift 22s ease-in-out infinite alternate;
+  will-change: transform, opacity;
 }
 
 @keyframes smokeDrift {
-  0% { transform: translateX(-1%) translateY(0); }
-  100% { transform: translateX(2%) translateY(-1.5%); }
+  0% { transform: translate3d(-1%, 0, 0); }
+  100% { transform: translate3d(2%, -1.5%, 0); }
 }
 
 .battlefield__particles {
@@ -98,6 +101,7 @@
   overflow: hidden;
   pointer-events: none;
   opacity: 1;
+  contain: layout paint;
 }
 
 .bf-blast {
@@ -156,6 +160,7 @@
   box-shadow: 0 14px 16px rgba(0, 0, 0, 0.66), 0 -2px 18px rgba(255, 82, 20, 0.12);
   opacity: 0.82;
   animation: vehicleIdle 5s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .bf-vehicle::before {
@@ -209,6 +214,7 @@
   filter: drop-shadow(0 8px 8px #000);
   transform-origin: bottom center;
   animation: soldierWatch 4.5s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .bf-soldier::before {
@@ -261,6 +267,7 @@
   box-shadow: 0 0 8px #ff7027;
   opacity: 0;
   animation: grenadeArc 5.2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .bf-grenade--one { left: 38%; bottom: 34%; animation-delay: 1.8s; }
@@ -273,24 +280,24 @@
 }
 
 @keyframes tracerFire {
-  0%, 20%, 100% { opacity: 0; transform: translate(-40px, 30px) rotate(-18deg); }
+  0%, 20%, 100% { opacity: 0; transform: translate3d(-40px, 30px, 0) rotate(-18deg); }
   24% { opacity: 0.9; }
-  34% { opacity: 0; transform: translate(220px, -90px) rotate(-18deg); }
+  34% { opacity: 0; transform: translate3d(220px, -90px, 0) rotate(-18deg); }
 }
 
 @keyframes vehicleIdle {
-  from { transform: translateX(-2px); }
-  to { transform: translateX(4px) translateY(-2px); }
+  from { transform: translate3d(-2px, 0, 0); }
+  to { transform: translate3d(4px, -2px, 0); }
 }
 
 @keyframes vehiclePatrolLeft {
-  from { transform: translateX(-8px) scale(0.86); }
-  to { transform: translateX(18px) translateY(-3px) scale(0.86); }
+  from { transform: translate3d(-8px, 0, 0) scale(0.86); }
+  to { transform: translate3d(18px, -3px, 0) scale(0.86); }
 }
 
 @keyframes vehiclePatrolRight {
-  from { transform: translateX(10px) scale(0.62) scaleX(-1); }
-  to { transform: translateX(-18px) translateY(-3px) scale(0.62) scaleX(-1); }
+  from { transform: translate3d(10px, 0, 0) scale(0.62) scaleX(-1); }
+  to { transform: translate3d(-18px, -3px, 0) scale(0.62) scaleX(-1); }
 }
 
 @keyframes soldierWatch {
@@ -299,18 +306,18 @@
 }
 
 @keyframes soldierPatrolLeft {
-  from { transform: translateX(-4px) scale(0.66) rotate(-1deg); }
-  to { transform: translateX(7px) scale(0.66) rotate(2deg); }
+  from { transform: translate3d(-4px, 0, 0) scale(0.66) rotate(-1deg); }
+  to { transform: translate3d(7px, 0, 0) scale(0.66) rotate(2deg); }
 }
 
 @keyframes soldierPatrolCenter {
-  from { transform: translateX(3px) scale(0.9) rotate(-1deg); }
-  to { transform: translateX(-5px) scale(0.9) rotate(2deg); }
+  from { transform: translate3d(3px, 0, 0) scale(0.9) rotate(-1deg); }
+  to { transform: translate3d(-5px, 0, 0) scale(0.9) rotate(2deg); }
 }
 
 @keyframes soldierPatrolRight {
-  from { transform: translateX(5px) scale(0.58) scaleX(-1) rotate(-1deg); }
-  to { transform: translateX(-8px) scale(0.58) scaleX(-1) rotate(2deg); }
+  from { transform: translate3d(5px, 0, 0) scale(0.58) scaleX(-1) rotate(-1deg); }
+  to { transform: translate3d(-8px, 0, 0) scale(0.58) scaleX(-1) rotate(2deg); }
 }
 
 @keyframes muzzleFlash {
@@ -320,10 +327,10 @@
 }
 
 @keyframes grenadeArc {
-  0%, 100% { opacity: 0; transform: translate(0, 0); }
+  0%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
   12% { opacity: 0.9; }
-  48% { opacity: 0.8; transform: translate(100px, -130px); }
-  60% { opacity: 0; transform: translate(170px, 0); }
+  48% { opacity: 0.8; transform: translate3d(100px, -130px, 0); }
+  60% { opacity: 0; transform: translate3d(170px, 0, 0); }
 }
 
 .bf-spark {
@@ -335,6 +342,7 @@
   box-shadow: 0 0 6px 2px rgba(255, 176, 102, 0.8);
   opacity: 0;
   animation: sparkRise linear infinite;
+  will-change: transform, opacity;
 }
 
 .bf-spark--1 { left: 8%;  animation-duration: 9s;  animation-delay: 0s; }
@@ -346,10 +354,10 @@
 .bf-spark--7 { left: 88%; animation-duration: 9.5s; animation-delay: 1s; }
 
 @keyframes sparkRise {
-  0% { bottom: -2%; opacity: 0; transform: translateX(0); }
+  0% { bottom: -2%; opacity: 0; transform: translate3d(0, 0, 0); }
   10% { opacity: 0.9; }
   90% { opacity: 0.4; }
-  100% { bottom: 92%; opacity: 0; transform: translateX(24px); }
+  100% { bottom: 92%; opacity: 0; transform: translate3d(24px, 0, 0); }
 }
 
 .battlefield__scanlines {
@@ -413,6 +421,14 @@
     radial-gradient(120% 100% at 50% 50%, transparent 56%, rgba(0, 0, 0, 0.28) 100%);
 }
 
+.bf-paused .battlefield__smoke,
+.bf-paused .bf-spark,
+.bf-paused .battlefield__combat,
+.bf-paused .battlefield__combat *,
+.bf-paused.battlefield--page .battlefield__photo {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .battlefield__smoke,
   .bf-spark,
@@ -427,6 +443,15 @@
   .bf-grenade,
   .bf-soldier b {
     opacity: 0;
+  }
+}
+
+@media (max-width: 980px) {
+  .battlefield__smoke,
+  .battlefield__scanlines,
+  .battlefield__combat,
+  .bf-spark {
+    animation: none;
   }
 }
 

@@ -7,6 +7,8 @@ import { useEffect, useRef } from 'react';
  */
 export function useReveal(options = {}) {
   const ref = useRef(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
 
   useEffect(() => {
     const node = ref.current;
@@ -22,12 +24,13 @@ export function useReveal(options = {}) {
           }
         });
       },
-      { threshold: 0.2, rootMargin: '0px 0px -8% 0px', ...options }
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px', ...optionsRef.current }
     );
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [options]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return ref;
 }

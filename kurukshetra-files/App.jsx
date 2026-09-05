@@ -28,19 +28,29 @@ function App() {
     const sections = Array.from(document.querySelectorAll('main > section'));
     if (!battlefield || sections.length === 0) return undefined;
 
+    let rafId = 0;
     const updateFocus = () => {
-      const focusLine = window.innerHeight * 0.45;
-      let activeIndex = 0;
-      sections.forEach((section, index) => {
-        if (section.getBoundingClientRect().top <= focusLine) activeIndex = index;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const focusLine = window.innerHeight * 0.45;
+        let activeIndex = 0;
+
+        for (let index = 0; index < sections.length; index += 1) {
+          if (sections[index].getBoundingClientRect().top <= focusLine) {
+            activeIndex = index;
+          }
+        }
+
+        battlefield.dataset.focus = String(activeIndex);
       });
-      battlefield.dataset.focus = String(activeIndex);
     };
 
     updateFocus();
     window.addEventListener('scroll', updateFocus, { passive: true });
-    window.addEventListener('resize', updateFocus);
+    window.addEventListener('resize', updateFocus, { passive: true });
+
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', updateFocus);
       window.removeEventListener('resize', updateFocus);
     };

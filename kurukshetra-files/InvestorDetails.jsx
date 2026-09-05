@@ -1,3 +1,4 @@
+import { useReveal } from './useReveal';
 import './InvestorDetails.css';
 
 const FEATURES = [
@@ -52,8 +53,9 @@ const FUTURE_STEPS = [
 ];
 
 function DetailGrid({ items }) {
+  const ref = useReveal();
   return (
-    <div className="investor-detail-grid">
+    <div ref={ref} className="investor-detail-grid reveal-stagger">
       {items.map((item) => (
         <article key={item.title} className="investor-detail-item">
           {item.number && <span className="investor-detail-item__number">{item.number}</span>}
@@ -65,32 +67,41 @@ function DetailGrid({ items }) {
   );
 }
 
+function SectionHeader({ wide, children }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className={`reveal investor-section__header${wide ? ' investor-section__header--wide' : ''}`}>
+      {children}
+    </div>
+  );
+}
+
 export default function InvestorDetails() {
   return (
     <div className="investor-details">
       <section id="features" className="investor-section">
         <div className="container">
-          <div className="investor-section__header">
+          <SectionHeader>
             <div className="eyebrow">Investor brief</div>
             <h2>Key Features of Kurukshetra</h2>
-          </div>
+          </SectionHeader>
           <DetailGrid items={FEATURES} />
         </div>
       </section>
 
       <section id="benefits" className="investor-section investor-section--alt">
         <div className="container">
-          <div className="investor-section__header">
+          <SectionHeader>
             <div className="eyebrow">The blockchain advantage</div>
             <h2>Blockchain Benefits in Gaming</h2>
-          </div>
+          </SectionHeader>
           <DetailGrid items={BENEFITS} />
         </div>
       </section>
 
       <section id="trust" className="investor-section">
         <div className="container">
-          <div className="investor-section__header investor-section__header--wide">
+          <SectionHeader wide>
             <div className="eyebrow">The foundation</div>
             <h2>Building Trust Through Innovation</h2>
             <p>
@@ -99,14 +110,14 @@ export default function InvestorDetails() {
               mechanics, we&rsquo;re creating a gaming experience that&rsquo;s not only entertaining but also
               potentially profitable for our community.
             </p>
-          </div>
+          </SectionHeader>
           <DetailGrid items={TRUST_STEPS} />
         </div>
       </section>
 
       <section id="future" className="investor-section investor-section--alt">
         <div className="container">
-          <div className="investor-section__header investor-section__header--wide">
+          <SectionHeader wide>
             <div className="eyebrow">The long view</div>
             <h2>The Future of Kurukshetra</h2>
             <p>
@@ -115,7 +126,7 @@ export default function InvestorDetails() {
               meets blockchain technology to create unprecedented opportunities for players and
               investors alike.
             </p>
-          </div>
+          </SectionHeader>
           <DetailGrid items={FUTURE_STEPS} />
         </div>
       </section>

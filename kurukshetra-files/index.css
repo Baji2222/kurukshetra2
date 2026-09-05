@@ -234,6 +234,17 @@ img {
   }
 }
 
+@media (max-width: 980px) {
+  .glow-btn,
+  .ghost-btn {
+    transform: none;
+  }
+
+  .ghost-btn {
+    backdrop-filter: none;
+  }
+}
+
 ::selection {
   background: var(--orange);
   color: #1a0900;

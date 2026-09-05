@@ -36,67 +36,69 @@ export default function Gameplay() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section) return undefined;
 
-    // Header fades in as user scrolls into this section
-    if (headerRef.current) {
-      gsap.fromTo(
-        headerRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set([headerRef.current, lineRef.current, section], { opacity: 1, y: 0, scaleY: 1 });
+        return;
+      }
+
+      // Header fades in as user scrolls into this section
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              end: 'top 40%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
+
+      // Timeline line grows from top to bottom as user scrolls
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleY: 0, transformOrigin: 'top center' },
+          {
+            scaleY: 1,
+            scrollTrigger: {
+              trigger: timelineRef.current,
+              start: 'top 80%',
+              end: 'bottom 20%',
+              scrub: 2,
+              markers: false,
+            },
+          }
+        );
+      }
+
+      // Background parallax effect - cinematic depth
+      const bg = section.querySelector('.gameplay__bg');
+      if (bg) {
+        gsap.to(bg, {
+          y: -100,
           scrollTrigger: {
             trigger: section,
-            start: 'top 80%',
-            end: 'top 40%',
-            scrub: 1,
-            markers: false,
-          },
-        }
-      );
-    }
-
-    // Timeline line grows from top to bottom as user scrolls
-    if (lineRef.current) {
-      gsap.fromTo(
-        lineRef.current,
-        { scaleY: 0, transformOrigin: 'top center' },
-        {
-          scaleY: 1,
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
+            start: 'top bottom',
+            end: 'bottom top',
             scrub: 2,
             markers: false,
           },
-        }
-      );
-    }
+        });
+      }
+    }, section);
 
-    // Background parallax effect - cinematic depth
-    const bg = section.querySelector('.gameplay__bg');
-    if (bg) {
-      gsap.to(bg, {
-        y: -100,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 2,
-          markers: false,
-        },
-      });
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === section || trigger.vars.trigger === timelineRef.current) {
-          trigger.kill();
-        }
-      });
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -126,65 +128,71 @@ export default function Gameplay() {
 
 function TimelineStep({ step, index }) {
   const ref = useRef(null);
-  const contentRef = useRef(null);
   const { num, Icon, title, text } = step;
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current) return undefined;
 
-    // Individual steps fade in and slide from left/right alternating
-    const direction = index % 2 === 0 ? -50 : 50;
-
-    gsap.fromTo(
-      ref.current,
-      {
-        opacity: 0,
-        x: direction,
-        y: 50,
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        delay: index * 0.2,
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 80%',
-          end: 'top 30%',
-          scrub: 1,
-          markers: false,
-        },
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set(ref.current, { opacity: 1, x: 0, y: 0 });
+        return;
       }
-    );
 
-    // Marker glow pulses
-    const marker = ref.current.querySelector('.gameplay-step__marker');
-    if (marker) {
-      gsap.to(marker, {
-        boxShadow: '0 0 30px rgba(255, 138, 61, 0.6), 0 0 60px rgba(255, 138, 61, 0.3)',
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 60%',
-          end: 'top 10%',
-          scrub: 1,
-          markers: false,
+      // Individual steps fade in and slide from left/right alternating
+      const direction = index % 2 === 0 ? -50 : 50;
+
+      gsap.fromTo(
+        ref.current,
+        {
+          opacity: 0,
+          x: direction,
+          y: 50,
         },
-      });
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === ref.current) {
-          trigger.kill();
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          delay: index * 0.2,
+          scrollTrigger: {
+            trigger: ref.current,
+            start: 'top 80%',
+            end: 'top 30%',
+            scrub: 1,
+            markers: false,
+          },
         }
-      });
-    };
+      );
+
+      // Marker glow pulses in (opacity-only — cheap, no repaint)
+      const markerGlow = ref.current.querySelector('.gameplay-step__marker-glow');
+      if (markerGlow) {
+        gsap.fromTo(
+          markerGlow,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            scrollTrigger: {
+              trigger: ref.current,
+              start: 'top 60%',
+              end: 'top 10%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
+    }, ref);
+
+    return () => ctx.revert();
   }, [index]);
 
   return (
     <div ref={ref} className="reveal gameplay-step">
       <div className="gameplay-step__marker">
         <Icon />
+        <span className="gameplay-step__marker-glow" aria-hidden="true" />
       </div>
       <div className="gameplay-step__num">{num}</div>
       <h3 className="gameplay-step__title">{title}</h3>

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import './Battlefield.css';
 
 /**
@@ -9,8 +10,24 @@ import './Battlefield.css';
  * gradient/particle treatment, so the composition doesn't need to change.
  */
 export default function Battlefield({ image, variant = 'hero', children }) {
+  const rootRef = useRef(null);
+  const [inView, setInView] = useState(true);
+
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: '200px 0px' }
+    );
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`battlefield battlefield--${variant}`}>
+    <div ref={rootRef} className={`battlefield battlefield--${variant}${inView ? '' : ' bf-paused'}`}>
       {image && (
         <div className="battlefield__photo" style={{ backgroundImage: `url(${image})` }} />
       )}

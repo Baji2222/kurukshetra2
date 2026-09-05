@@ -17,80 +17,20 @@ export default function Hero() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section) return undefined;
 
-    // Scroll-linked animations for PAGE 1
-    // As user scrolls, the hero content moves up and fades out
-    gsap.to(contentRef.current, {
-      y: -100,
-      opacity: 0.3,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 2,
-        markers: false,
-      },
-    });
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      gsap.set([contentRef.current, eyebrowRef.current, brandRef.current, titleRef.current, subtitleRef.current, actionsRef.current], { clearProps: 'all' });
+      return undefined;
+    }
 
-    // Brand/Logo moves up faster (parallax effect)
-    gsap.to([eyebrowRef.current, brandRef.current], {
-      y: -300,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '80% top',
-        scrub: 2,
-        markers: false,
-      },
-    });
-
-    // Title moves up with slight zoom out
-    gsap.to(titleRef.current, {
-      y: -150,
-      scale: 0.8,
-      opacity: 0.5,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '60% top',
-        scrub: 2,
-        markers: false,
-      },
-    });
-
-    // Subtitle fades earlier
-    gsap.to(subtitleRef.current, {
-      opacity: 0,
-      y: -50,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '40% top',
-        scrub: 1,
-        markers: false,
-      },
-    });
-
-    // CTA buttons fade and move up
-    gsap.to(actionsRef.current, {
-      opacity: 0,
-      y: -30,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '30% top',
-        scrub: 1,
-        markers: false,
-      },
-    });
-
-    // Battlefield parallax effect - subtle zoom in
-    const battlefield = section.querySelector('.battlefield-bg');
-    if (battlefield) {
-      gsap.to(battlefield, {
-        scale: 1.1,
+    const ctx = gsap.context(() => {
+      // Scroll-linked animations for PAGE 1
+      // As user scrolls, the hero content moves up and fades out
+      gsap.to(contentRef.current, {
+        y: -100,
+        opacity: 0.3,
         scrollTrigger: {
           trigger: section,
           start: 'top top',
@@ -99,15 +39,77 @@ export default function Hero() {
           markers: false,
         },
       });
-    }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === section) {
-          trigger.kill();
-        }
+      // Brand/Logo moves up faster (parallax effect)
+      gsap.to([eyebrowRef.current, brandRef.current], {
+        y: -300,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '80% top',
+          scrub: 2,
+          markers: false,
+        },
       });
-    };
+
+      // Title moves up with slight zoom out
+      gsap.to(titleRef.current, {
+        y: -150,
+        scale: 0.8,
+        opacity: 0.5,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '60% top',
+          scrub: 2,
+          markers: false,
+        },
+      });
+
+      // Subtitle fades earlier
+      gsap.to(subtitleRef.current, {
+        opacity: 0,
+        y: -50,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '40% top',
+          scrub: 1,
+          markers: false,
+        },
+      });
+
+      // CTA buttons fade and move up
+      gsap.to(actionsRef.current, {
+        opacity: 0,
+        y: -30,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '30% top',
+          scrub: 1,
+          markers: false,
+        },
+      });
+
+      // Battlefield parallax effect - subtle zoom in
+      const battlefield = section.querySelector('.battlefield-bg');
+      if (battlefield) {
+        gsap.to(battlefield, {
+          scale: 1.1,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 2,
+            markers: false,
+          },
+        });
+      }
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   return (

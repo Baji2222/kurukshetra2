@@ -85,6 +85,18 @@
   justify-content: center;
   position: relative;
   transform-style: preserve-3d;
+  animation: coinSpin 6s linear infinite;
+  animation-play-state: paused;
+}
+
+.crypto-section.in-view .crypto__coin {
+  animation-play-state: running;
+}
+
+@keyframes coinSpin {
+  to {
+    transform: rotateY(360deg);
+  }
 }
 
 .crypto__coin-tilt {
@@ -101,6 +113,11 @@
   border: 2px solid rgba(212, 175, 55, 0.3);
   border-radius: 50%;
   animation: coinPulse 2s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.crypto-section.in-view .crypto__coin::before {
+  animation-play-state: running;
 }
 
 @keyframes coinPulse {
@@ -204,6 +221,13 @@
 
 .crypto__token-features strong {
   color: var(--orange);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crypto__coin,
+  .crypto__coin::before {
+    animation: none;
+  }
 }
 
 /* Responsive design */

@@ -12,82 +12,31 @@ export default function CryptoSystem() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section) return undefined;
 
-    // Main section animation: fade in and translate
-    gsap.fromTo(
-      section,
-      {
-        opacity: 0,
-        y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-          end: 'top 20%',
-          scrub: 1,
-          markers: false,
-        },
-      }
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => section.classList.toggle('in-view', entry.isIntersecting),
+      { threshold: 0.05 }
     );
+    visibilityObserver.observe(section);
 
-    // Coin rotation: continuous spin tied to scroll
-    gsap.to(coinRef.current, {
-      rotationY: 360,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top center',
-        end: 'center center',
-        scrub: 2,
-        markers: false,
-      },
-      repeat: -1,
-      ease: 'none',
-    });
+    const ctx = gsap.context(() => {
+      if (reduceMotion) {
+        gsap.set(section, { opacity: 1, y: 0 });
+        if (coinRef.current) gsap.set(coinRef.current, { rotationY: 0 });
+        if (circuitryRef.current) gsap.set(circuitryRef.current, { opacity: 0.35 });
+        return;
+      }
 
-    const coinWrapper = section.querySelector('.crypto__coin-wrapper');
-    const coinTilt = section.querySelector('.crypto__coin-tilt');
-    const onPointerMove = (event) => {
-      if (!coinWrapper || !coinTilt) return;
-      const bounds = coinWrapper.getBoundingClientRect();
-      const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-      const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
-      gsap.to(coinTilt, {
-        rotationY: x * 24,
-        rotationX: y * -16,
-        duration: 0.35,
-        ease: 'power2.out',
-        overwrite: 'auto',
-      });
-    };
-    const resetPointer = () => {
-      if (!coinTilt) return;
-      gsap.to(coinTilt, { rotationY: 0, rotationX: 0, duration: 0.6, ease: 'power3.out' });
-    };
-    coinWrapper?.addEventListener('pointermove', onPointerMove);
-    coinWrapper?.addEventListener('pointerleave', resetPointer);
-
-    // Circuitry animation: subtle glow pulse tied to scroll
-    gsap.to(circuitryRef.current, {
-      opacity: 0.8,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top 60%',
-        end: 'center center',
-        scrub: 1,
-        markers: false,
-      },
-    });
-
-    // Left side reveal with stagger
-    const contentSection = section.querySelector('.crypto__content');
-    if (contentSection) {
+      // Main section animation: fade in and translate
       gsap.fromTo(
-        contentSection,
-        { opacity: 0, y: 50 },
+        section,
+        {
+          opacity: 0,
+          y: 100,
+        },
         {
           opacity: 1,
           y: 0,
@@ -100,33 +49,101 @@ export default function CryptoSystem() {
           },
         }
       );
-    }
 
-    // Right side reveal with stagger
-    const tokenCards = section.querySelectorAll('.crypto__token');
-    if (tokenCards.length) {
-      gsap.fromTo(
-        tokenCards,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.2,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 75%',
-            end: 'top 15%',
-            scrub: 1,
-            markers: false,
-          },
-        }
-      );
-    }
+      const coinWrapper = section.querySelector('.crypto__coin-wrapper');
+      const coinTilt = section.querySelector('.crypto__coin-tilt');
+      let tiltFrame = 0;
+
+      const onPointerMove = (event) => {
+        if (!coinWrapper || !coinTilt) return;
+        const bounds = coinWrapper.getBoundingClientRect();
+        const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
+        const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+
+        cancelAnimationFrame(tiltFrame);
+        tiltFrame = requestAnimationFrame(() => {
+          gsap.to(coinTilt, {
+            rotationY: x * 24,
+            rotationX: y * -16,
+            duration: 0.35,
+            ease: 'power2.out',
+            overwrite: 'auto',
+          });
+        });
+      };
+
+      const resetPointer = () => {
+        cancelAnimationFrame(tiltFrame);
+        if (!coinTilt) return;
+        gsap.to(coinTilt, { rotationY: 0, rotationX: 0, duration: 0.6, ease: 'power3.out' });
+      };
+
+      coinWrapper?.addEventListener('pointermove', onPointerMove);
+      coinWrapper?.addEventListener('pointerleave', resetPointer);
+
+      // Circuitry animation: subtle glow pulse tied to scroll
+      gsap.to(circuitryRef.current, {
+        opacity: 0.8,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 60%',
+          end: 'center center',
+          scrub: 1,
+          markers: false,
+        },
+      });
+
+      // Left side reveal with stagger
+      const contentSection = section.querySelector('.crypto__content');
+      if (contentSection) {
+        gsap.fromTo(
+          contentSection,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              end: 'top 20%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
+
+      // Right side reveal with stagger
+      const tokenCards = section.querySelectorAll('.crypto__token');
+      if (tokenCards.length) {
+        gsap.fromTo(
+          tokenCards,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 75%',
+              end: 'top 15%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
+
+      return () => {
+        cancelAnimationFrame(tiltFrame);
+        coinWrapper?.removeEventListener('pointermove', onPointerMove);
+        coinWrapper?.removeEventListener('pointerleave', resetPointer);
+      };
+    }, section);
 
     return () => {
-      coinWrapper?.removeEventListener('pointermove', onPointerMove);
-      coinWrapper?.removeEventListener('pointerleave', resetPointer);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      visibilityObserver.disconnect();
+      ctx.revert();
     };
   }, []);
 

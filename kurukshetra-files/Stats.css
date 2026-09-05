@@ -9,7 +9,17 @@
   overflow: hidden;
 }
 
-/* Blockchain circuitry background pattern */
+/* Darkening overlay — animated via opacity (cheap, compositor-only) instead
+   of animating background-color directly, which forces a repaint of the
+   whole section on every scroll tick. */
+.stats__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(5, 5, 6, 0.8);
+  opacity: 0;
+  pointer-events: none;
+}
 .stats__circuitry {
   position: absolute;
   top: 0;

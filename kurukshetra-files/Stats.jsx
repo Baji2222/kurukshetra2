@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useReveal } from './useReveal';
 import { useCountUp } from './useCountUp';
 import './Stats.css';
 
@@ -38,57 +37,59 @@ function StatCard({ stat, index }) {
   const labelRef = useRef(null);
 
   useEffect(() => {
-    if (!cardRef.current) return;
+    if (!cardRef.current) return undefined;
 
-    // Individual stat cards animate in staggered fashion
-    gsap.fromTo(
-      cardRef.current,
-      {
-        opacity: 0,
-        scale: 0.8,
-        y: 50,
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        delay: index * 0.3,
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top 80%',
-          end: 'top 20%',
-          scrub: 1,
-          markers: false,
-        },
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set([cardRef.current, labelRef.current], { opacity: 1, scale: 1, y: 0 });
+        return;
       }
-    );
 
-    // Labels fade in after cards
-    if (labelRef.current) {
+      // Individual stat cards animate in staggered fashion
       gsap.fromTo(
-        labelRef.current,
-        { opacity: 0 },
+        cardRef.current,
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: 50,
+        },
         {
           opacity: 1,
-          delay: index * 0.3 + 0.2,
+          scale: 1,
+          y: 0,
+          delay: index * 0.3,
           scrollTrigger: {
             trigger: cardRef.current,
-            start: 'top 75%',
-            end: 'top 15%',
+            start: 'top 80%',
+            end: 'top 20%',
             scrub: 1,
             markers: false,
           },
         }
       );
-    }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === cardRef.current) {
-          trigger.kill();
-        }
-      });
-    };
+      // Labels fade in after cards
+      if (labelRef.current) {
+        gsap.fromTo(
+          labelRef.current,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            delay: index * 0.3 + 0.2,
+            scrollTrigger: {
+              trigger: cardRef.current,
+              start: 'top 75%',
+              end: 'top 15%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
+    }, cardRef);
+
+    return () => ctx.revert();
   }, [index]);
 
   return (
@@ -108,78 +109,85 @@ function StatCard({ stat, index }) {
 
 export default function Stats() {
   const sectionRef = useRef(null);
+  const overlayRef = useRef(null);
   const headerRef = useRef(null);
   const gridRef = useRef(null);
   const circuitryRef = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section) return undefined;
 
-    // Darker background overlay as user scrolls into this section
-    gsap.fromTo(
-      section,
-      { backgroundColor: 'rgba(5, 5, 6, 0)' },
-      {
-        backgroundColor: 'rgba(5, 5, 6, 0.8)',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-          end: 'top 20%',
-          scrub: 1,
-          markers: false,
-        },
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set([section, headerRef.current, circuitryRef.current], { opacity: 1, y: 0 });
+        if (overlayRef.current) gsap.set(overlayRef.current, { opacity: 1 });
+        return;
       }
-    );
 
-    // Blockchain circuit pattern fades in
-    if (circuitryRef.current) {
-      gsap.fromTo(
-        circuitryRef.current,
-        { opacity: 0 },
-        {
-          opacity: 0.15,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 70%',
-            end: 'center center',
-            scrub: 1,
-            markers: false,
-          },
-        }
-      );
-    }
+      // Darker overlay fades in as user scrolls into this section
+      if (overlayRef.current) {
+        gsap.fromTo(
+          overlayRef.current,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              end: 'top 20%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
 
-    // Section title fades in from bottom
-    if (headerRef.current) {
-      gsap.fromTo(
-        headerRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 75%',
-            end: 'top 35%',
-            scrub: 1,
-            markers: false,
-          },
-        }
-      );
-    }
+      // Blockchain circuit pattern fades in
+      if (circuitryRef.current) {
+        gsap.fromTo(
+          circuitryRef.current,
+          { opacity: 0 },
+          {
+            opacity: 0.15,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 70%',
+              end: 'center center',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === section) {
-          trigger.kill();
-        }
-      });
-    };
+      // Section title fades in from bottom
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 75%',
+              end: 'top 35%',
+              scrub: 1,
+              markers: false,
+            },
+          }
+        );
+      }
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section ref={sectionRef} id="stats" className="stats-section">
+      <div ref={overlayRef} className="stats__overlay" aria-hidden="true" />
       <div ref={circuitryRef} className="stats__circuitry" aria-hidden="true" />
 
       <div className="container">
