@@ -393,14 +393,20 @@
   animation: battlefieldPhotoDrift 30s ease-in-out infinite alternate;
 }
 
-.page-battlefield[data-focus='0'] .battlefield__photo { background-position: 32% 48%; }
-.page-battlefield[data-focus='1'] .battlefield__photo { background-position: 50% 42%; }
-.page-battlefield[data-focus='2'] .battlefield__photo { background-position: 66% 52%; }
-.page-battlefield[data-focus='3'] .battlefield__photo { background-position: 42% 58%; }
-.page-battlefield[data-focus='4'] .battlefield__photo { background-position: 72% 48%; }
-.page-battlefield[data-focus='5'] .battlefield__photo { background-position: 55% 60%; }
-.page-battlefield[data-focus='6'] .battlefield__photo { background-position: 28% 54%; }
-.page-battlefield[data-focus='7'] .battlefield__photo { background-position: 50% 62%; }
+/* This instance is permanently visible (position: fixed, behind every
+   section) so it can never be paused by scrolling out of view like the
+   Hero copy can. Its combat sprites, particles and blurred smoke would
+   otherwise run continuously for the entire time the site is open — that
+   was the single biggest source of scroll lag on the site. A persistent
+   backdrop only needs the photo + a soft vignette, not a constantly
+   animating battle scene. */
+.battlefield--page .battlefield__smoke,
+.battlefield--page .battlefield__particles,
+.battlefield--page .battlefield__combat {
+  display: none;
+}
+
+.page-battlefield .battlefield__photo { background-position: 50% 50%; }
 
 @keyframes battlefieldPhotoDrift {
   from { transform: scale(1.04) translate3d(-0.8%, 0, 0); }
@@ -409,10 +415,6 @@
 
 .battlefield--page .battlefield__structures {
   opacity: 0.24;
-}
-
-.battlefield--page .battlefield__combat {
-  opacity: 0.68;
 }
 
 .battlefield--page .battlefield__vignette {

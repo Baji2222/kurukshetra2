@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import IntroAnimation from './IntroAnimation';
 import Battlefield from './Battlefield';
 import Navbar from './Navbar';
@@ -21,46 +21,12 @@ function App() {
   // entry welcome overlay is dismissed.
   const [introDone, setIntroDone] = useState(true);
   const [showWelcome, setShowWelcome] = useState(true);
-  const pageBattlefieldRef = useRef(null);
-
-  useEffect(() => {
-    const battlefield = pageBattlefieldRef.current;
-    const sections = Array.from(document.querySelectorAll('main > section'));
-    if (!battlefield || sections.length === 0) return undefined;
-
-    let rafId = 0;
-    const updateFocus = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const focusLine = window.innerHeight * 0.45;
-        let activeIndex = 0;
-
-        for (let index = 0; index < sections.length; index += 1) {
-          if (sections[index].getBoundingClientRect().top <= focusLine) {
-            activeIndex = index;
-          }
-        }
-
-        battlefield.dataset.focus = String(activeIndex);
-      });
-    };
-
-    updateFocus();
-    window.addEventListener('scroll', updateFocus, { passive: true });
-    window.addEventListener('resize', updateFocus, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', updateFocus);
-      window.removeEventListener('resize', updateFocus);
-    };
-  }, []);
 
   return (
     <>
       {!introDone && <IntroAnimation onComplete={() => setIntroDone(true)} />}
 
-      <div ref={pageBattlefieldRef} className="page-battlefield" data-focus="0" aria-hidden="true">
+      <div className="page-battlefield" aria-hidden="true">
         <Battlefield variant="page" image="./battlefield-hero.jpg" />
       </div>
       <Navbar />

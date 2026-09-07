@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useReveal } from './useReveal';
 import { XIcon, TelegramIcon, DiscordIcon } from './Icons';
 import './Community.css';
@@ -10,6 +11,20 @@ const CHANNELS = [
 
 export default function Community() {
   const ref = useReveal();
+  const orbitRef = useRef(null);
+  const [orbitInView, setOrbitInView] = useState(false);
+
+  useEffect(() => {
+    const node = orbitRef.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setOrbitInView(entry.isIntersecting),
+      { rootMargin: '150px 0px' }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id="community" className="community-section">
@@ -24,7 +39,7 @@ export default function Community() {
             <div className="community-orbit__ring community-orbit__ring--inner" />
 
             <div className="community-orbit__center">
-              <img src="/coin-logo.png" alt="Kurukshetra logo" />
+              <img src="/coin-logo.webp" alt="Kurukshetra logo" />
               <span>KURUKSHETRA</span>
             </div>
 

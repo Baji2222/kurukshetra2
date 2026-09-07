@@ -34,6 +34,44 @@ export default function IntroAnimation({ onComplete }) {
 
     try {
       const now = context.currentTime;
+
+      if (type === 'resolve') {
+        // Big bass landing hit: a pitch-dropping sub boom + a short filtered
+        // noise thud layered underneath for body/punch.
+        const boomGain = context.createGain();
+        boomGain.connect(context.destination);
+        boomGain.gain.setValueAtTime(0.0001, now);
+        boomGain.gain.exponentialRampToValueAtTime(0.55, now + 0.02);
+        boomGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+
+        const boom = context.createOscillator();
+        boom.type = 'sine';
+        boom.frequency.setValueAtTime(150, now);
+        boom.frequency.exponentialRampToValueAtTime(38, now + 0.45);
+        boom.connect(boomGain);
+        boom.start(now);
+        boom.stop(now + 0.9);
+
+        const noiseBuffer = context.createBuffer(1, context.sampleRate * 0.35, context.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < data.length; i += 1) {
+          data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+        }
+        const noise = context.createBufferSource();
+        noise.buffer = noiseBuffer;
+        const noiseFilter = context.createBiquadFilter();
+        noiseFilter.type = 'lowpass';
+        noiseFilter.frequency.setValueAtTime(280, now);
+        const noiseGain = context.createGain();
+        noiseGain.gain.setValueAtTime(0.3, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(context.destination);
+        noise.start(now);
+        return;
+      }
+
       const gain = context.createGain();
       gain.connect(context.destination);
       gain.gain.setValueAtTime(0.0001, now);
@@ -82,22 +120,22 @@ export default function IntroAnimation({ onComplete }) {
     const at = (seconds, action) => timers.push(setTimeout(action, seconds * 1000));
 
     at(0.35, () => { setStage('toss'); playCue('rise'); });
-    at(2.35, () => { setStage('land'); setCoinLanded(true); playCue('resolve'); });
-    at(2.7, () => setStage('showcase'));
+    at(1.85, () => { setStage('land'); setCoinLanded(true); playCue('resolve'); });
+    at(2.0, () => setStage('showcase'));
 
     LETTERS.forEach((_, index) => {
       if (index === 4) return;
       const letterOrder = index > 4 ? index - 1 : index;
-      at(3.5 + letterOrder * 0.14, () => {
+      at(2.35 + letterOrder * 0.16, () => {
         setStage('reveal');
         setRevealed(letterOrder + 1);
         playCue('letter', letterOrder);
       });
     });
 
-    at(5.9, () => setStage('hold'));
-    at(6.8, () => setStage('exit'));
-    at(7.3, () => {
+    at(4.2, () => setStage('hold'));
+    at(5.1, () => setStage('exit'));
+    at(5.6, () => {
       document.body.style.overflow = '';
       onComplete();
     });
@@ -143,8 +181,9 @@ export default function IntroAnimation({ onComplete }) {
                   key={`coin-${i}`}
                   className={'intro__coin-slot' + (coinLanded ? ' intro__coin-slot--landed' : '')}
                 >
-                  <img className="intro__coin-face" src="/coin-logo.png" alt="Kurukshetra coin" />
+                  <img className="intro__coin-face" src="/coin-logo.webp" alt="Kurukshetra coin" />
                   <div className="intro__impact-flash" />
+                  <div className="intro__landing-smoke" />
                 </div>
               );
             }

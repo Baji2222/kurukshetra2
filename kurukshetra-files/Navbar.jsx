@@ -50,7 +50,7 @@ export default function Navbar() {
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
         <a href="#home" className="navbar__brand" onClick={() => setOpen(false)}>
-          <img className="navbar__brand-mark" src="/coin-logo.png" alt="Kurukshetra" />
+          <img className="navbar__brand-mark" src="/coin-logo.webp" alt="Kurukshetra" />
           <span className="navbar__brand-name">KURUKSHETRA</span>
         </a>
 

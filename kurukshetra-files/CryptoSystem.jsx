@@ -162,8 +162,8 @@ export default function CryptoSystem() {
         <div className="crypto__coin-wrapper">
           <div ref={coinRef} className="crypto__coin" aria-hidden="true">
             <div className="crypto__coin-tilt">
-              <img className="crypto__coin-face crypto__coin-face--front" src="/coin-logo.png" alt="" />
-              <img className="crypto__coin-face crypto__coin-face--back" src="/coin-logo.png" alt="" />
+              <img className="crypto__coin-face crypto__coin-face--front" src="/coin-logo.webp" alt="" />
+              <img className="crypto__coin-face crypto__coin-face--back" src="/coin-logo.webp" alt="" />
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Battlefield from './Battlefield';
 import './Hero.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -93,20 +92,6 @@ export default function Hero() {
         },
       });
 
-      // Battlefield parallax effect - subtle zoom in
-      const battlefield = section.querySelector('.battlefield-bg');
-      if (battlefield) {
-        gsap.to(battlefield, {
-          scale: 1.1,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 2,
-            markers: false,
-          },
-        });
-      }
     }, section);
 
     return () => ctx.revert();
@@ -114,8 +99,6 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} id="home" className="hero">
-      <Battlefield variant="hero" image="./battlefield-hero.jpg" />
-
       <div ref={contentRef} className="hero__content container">
         <div ref={eyebrowRef} className="eyebrow">GameFi narrative</div>
         <div className="hero__brand" ref={brandRef} aria-hidden="true">
